@@ -1,0 +1,19 @@
+NAME=philo
+FILES=./src/main.o ./src/table.o ./src/utils.o ./src/philo.o
+CC=cc -Wall -Wextra -ggdb
+
+all: $(NAME)
+
+$(NAME): $(FILES)
+	$(CC) $^ -o $@  -lpthread -fsanitize=thread -lc
+
+.o:.c
+	$(CC) -o $<
+
+clean:
+	rm -rf $(FILES)
+
+fclean: clean
+	rm -rf $(NAME)
+
+re:	fclean all
