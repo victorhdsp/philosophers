@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/02/25 11:14:54 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:25:43 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ int    ft_kill_philo(t_system *sys, int index)
 
     getting = -1;
     pthread_mutex_lock(&sys->mutex);
-    if (sys->table.philo_list[index] != -1)
+    if (sys->table.philo_list[index].lifetime != -1)
     {
-        sys->table.philo_list[index] = -1;
+        sys->table.philo_list[index].lifetime = -1;
         getting = 1;
     }
     pthread_mutex_unlock(&sys->mutex);
@@ -63,7 +63,7 @@ int    ft_is_alived(t_system *sys, int index)
 
     getting = 1;
     pthread_mutex_lock(&sys->mutex);
-    if (sys->table.philo_list[index] == -1)
+    if (sys->table.philo_list[index].lifetime == -1)
         getting = 0;
     pthread_mutex_unlock(&sys->mutex);
     return (getting);
@@ -76,17 +76,17 @@ void     ft_monitor(t_system *sys)
     index = 0;
     while (index <= 1)
     {
-        if (ft_get_current_time() >= sys->table.philo_list[index] + 2000)
+        if (ft_get_current_time() >= sys->table.philo_list[index].lifetime + sys->time_to_die)
             break;
         if (index == 1)
             index = -1;
         index++;
     }
     index = 0;
-    while (index < 2)
+    while (index < sys->number_of_philo)
     {
         ft_kill_philo(sys, index);
-        usleep(10);
+        ft_usleep(10);
         index++;
     }
 }

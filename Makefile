@@ -1,5 +1,5 @@
 NAME=philo
-FILES=./src/main.o ./src/time.o ./src/monitor.o
+FILES=./src/main.o ./src/time.o ./src/monitor.o ./src/utils.o
 CC=cc -Wall -Wextra -ggdb
 
 all: $(NAME)
