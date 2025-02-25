@@ -1,33 +1,28 @@
 #ifndef PHILO_H
 #define PHILO_H
 
-#include <unistd.h>
-#include <pthread.h>
-#include <stdlib.h>
 #include <sys/time.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <stdlib.h>
 
-typedef struct  s_table {
-    pthread_mutex_t mutex;
-    int             fork_numbers;
-    int             philosophers_count;
+typedef struct  s_table{
+    int             forks;
+    long            philo_list[2];
 }               t_table;
 
-typedef struct  s_system
-{
-    int             numbers_of_philosophers;
-    int             time_to_die;
-    int             time_to_eat;
-    int             time_to_sleep;
-    int             hunger_size;
+typedef struct  s_system{
+    pthread_mutex_t mutex;
     t_table         table;
+    int             cur_id;
 }               t_system;
 
-int     ft_get_fork_in_table(t_system *sys);
-int     ft_put_fork_in_table(t_system *sys);
-void    *ft_calloc(int size, int weight);
-char    *ft_itoa(const int value);
-long    ft_atol(const char *value);
-int     ft_is_digit(int c);
-void    *ft_start_routine(void *arg);
+long        ft_get_current_time();
+int         ft_get_fork(t_system *sys);
+int         ft_set_id(t_system *sys, int index);
+int         ft_kill_philo(t_system *sys, int index);
+int         ft_is_alived(t_system *sys, int index);
+void        ft_monitor(t_system *sys);
 
 #endif
