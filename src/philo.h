@@ -7,37 +7,51 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-typedef struct  s_philo {
-    pthread_t       thread_id;
-    long            lifetime;
-}               t_philo;
+#define NUL 0
+#define WAIT 1
+#define GETTING 2
+#define GETTED 3
+#define RETURNED 4
 
-typedef struct  s_table {
+typedef struct  s_philosopher
+{
+    pthread_mutex_t mutex;
+    int             id;
+    int             fork_action;
+    int             alived;
+    long            lifetime;
+    long            time_to_die;
+    long            time_to_eat;
+    long            time_to_sleep;
+    int             hungry_size;
+}               t_philosopher;
+
+typedef struct  s_table
+{
     int             forks;
-    t_philo         *philo_list;
+    pthread_t       *thread;
+    t_philosopher   *philosophers_list;
+    int             philosophers_number;
+    long            start_at;
 }               t_table;
 
-typedef struct  s_system {
-    pthread_mutex_t mutex;
-    t_table         table;
-    int             cur_id;
-    int             number_of_philo;
-    int             time_to_die;
-    int             time_to_food;
-    int             time_to_sleep;
-}               t_system;
 
 long        ft_get_current_time();
 void        ft_usleep(int value);
-int         ft_get_fork(t_system *sys);
-int         ft_set_id(t_system *sys, int index);
-int         ft_kill_philo(t_system *sys, int index);
-int         ft_is_alived(t_system *sys, int index);
-void        ft_monitor(t_system *sys);
+void        ft_set_lifetime(t_philosopher *philo, long value);
+long        ft_get_lifetime(t_philosopher *philo);
+
 long        ft_atol(const char *value);
 char        *ft_itoa(const int value);
 void        *ft_calloc(int size, int weight);
 int         ft_is_digit(int c);
-void        *ft_start_routine(void *arg);
+
+void        ft_monitor_routine(t_table *table);
+int         ft_philo_is_alived(t_philosopher *philo);
+void        ft_kill_philo(t_philosopher *philo);
+
+void        *ft_philo_routine(void *arg);
+void        ft_set_action(t_philosopher *philo, int value);
+int         ft_get_action(t_philosopher *philo);
 
 #endif

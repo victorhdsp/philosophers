@@ -6,87 +6,67 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/02/25 15:25:43 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/02/27 10:49:18 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int    ft_get_fork(t_system *sys)
+void    ft_kill_philo(t_philosopher *philo)
+{
+    pthread_mutex_lock(&philo->mutex);
+    philo->alived = 0;
+    pthread_mutex_unlock(&philo->mutex);
+}
+
+int     ft_philo_is_alived(t_philosopher *philo)
 {
     int     getting;
 
     getting = 0;
-    pthread_mutex_lock(&sys->mutex);
-    if (sys->table.forks >= 2)
-    {
-        sys->table.forks -= 2;
-        getting = 1;
-    }
-    pthread_mutex_unlock(&sys->mutex);
+    pthread_mutex_lock(&philo->mutex);
+    getting = philo->alived;
+    pthread_mutex_unlock(&philo->mutex);
     return (getting);
 }
 
-int    ft_set_id(t_system *sys, int index)
+void    ft_kill_all_philos(t_table *table)
 {
-    int     getting;
-
-    getting = -1;
-    pthread_mutex_lock(&sys->mutex);
-    if (sys->cur_id >= 0)
-    {
-        sys->cur_id = index;
-        getting = 1;
-    }
-    pthread_mutex_unlock(&sys->mutex);
-    return (getting);
-}
-
-int    ft_kill_philo(t_system *sys, int index)
-{
-    int     getting;
-
-    getting = -1;
-    pthread_mutex_lock(&sys->mutex);
-    if (sys->table.philo_list[index].lifetime != -1)
-    {
-        sys->table.philo_list[index].lifetime = -1;
-        getting = 1;
-    }
-    pthread_mutex_unlock(&sys->mutex);
-    return (getting);
-}
-
-int    ft_is_alived(t_system *sys, int index)
-{
-    int     getting;
-
-    getting = 1;
-    pthread_mutex_lock(&sys->mutex);
-    if (sys->table.philo_list[index].lifetime == -1)
-        getting = 0;
-    pthread_mutex_unlock(&sys->mutex);
-    return (getting);
-}
-
-void     ft_monitor(t_system *sys)
-{
-    int     index;
-
+    int         index;
     index = 0;
-    while (index <= 1)
+
+    while (index < table->philosophers_number)
     {
-        if (ft_get_current_time() >= sys->table.philo_list[index].lifetime + sys->time_to_die)
+        ft_kill_philo(&table->philosophers_list[index]);
+        index++;
+    }
+}
+
+void    ft_monitor_routine(t_table *table)
+{
+    int         index;
+    index = 0;
+
+    while (index < table->philosophers_number)
+    {
+        if (!ft_philo_is_alived(&table->philosophers_list[index]))
+        {
+            ft_kill_all_philos(table);
+            printf("%ld %d has died\n", ft_get_current_time(), index);
             break;
-        if (index == 1)
-            index = -1;
+        }
+        if (ft_get_action(&table->philosophers_list[index]) == WAIT && table->forks >= 2)
+        {
+            table->forks -= 2;
+            ft_set_action(&table->philosophers_list[index], GETTING);
+        }
+        if (ft_get_action(&table->philosophers_list[index]) == RETURNED)
+        {
+            table->forks += 2;
+            ft_set_action(&table->philosophers_list[index], NUL);
+        }
         index++;
-    }
-    index = 0;
-    while (index < sys->number_of_philo)
-    {
-        ft_kill_philo(sys, index);
-        ft_usleep(10);
-        index++;
+        if (index == table->philosophers_number)
+            index = 0;
     }
 }

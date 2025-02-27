@@ -6,11 +6,29 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 10:03:55 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/02/25 14:06:43 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/02/27 09:56:09 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void    ft_set_lifetime(t_philosopher *philo, long value)
+{
+    pthread_mutex_lock(&philo->mutex);
+    philo->lifetime = value;
+    pthread_mutex_unlock(&philo->mutex);
+}
+
+long    ft_get_lifetime(t_philosopher *philo)
+{
+    long     getting;
+
+    getting = 0;
+    pthread_mutex_lock(&philo->mutex);
+    getting = philo->lifetime;
+    pthread_mutex_unlock(&philo->mutex);
+    return (getting);
+}
 
 long    ft_get_current_time()
 {
