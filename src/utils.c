@@ -6,17 +6,20 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:22:58 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/02/25 13:41:52 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/02/27 11:42:07 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int     ft_is_digit(int c)
+int     ft_strlen(char *str)
 {
-    if (c >= '0' && c <= '9')
-        return (1);
-    return (0);
+    int     index;
+
+    index = 0;
+    while (str[index])
+        index++;
+    return (index);
 }
 
 long    ft_atol(const char *value)
@@ -35,7 +38,7 @@ long    ft_atol(const char *value)
     }
     while (value && value[index])
     {
-        if (!ft_is_digit(value[index]))
+        if (!(value[index] >= '0' && value[index] <= '9'))
             break;
         result = (result * 10) + (value[index] - '0');
         index++;
@@ -43,10 +46,10 @@ long    ft_atol(const char *value)
     return (result * minus);
 }
 
-char    *ft_itoa(const int value)
+char    *ft_ltoa(const long value)
 {
     char    *result;
-    int     tmp;
+    long     tmp;
     int     index;
 
     index = 0;

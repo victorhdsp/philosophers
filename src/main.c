@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:47:03 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/02/27 10:16:02 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/02/27 19:18:38 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static void          ft_start_table(char **av, t_table *table)
 void     ft_start_philosopher(char **av, int index, t_table *table)
 {
     t_philosopher   philo;
-    pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
     philo.id = index;
     philo.fork_action = 0;
@@ -37,8 +36,8 @@ void     ft_start_philosopher(char **av, int index, t_table *table)
         philo.hungry_size = ft_atol(av[5]);
     else
         philo.hungry_size = -1;
-    philo.mutex = mutex;
     table->philosophers_list[index] = philo;
+    pthread_mutex_init(&table->philosophers_list[index].mutex, NULL);
     philo.id = -3;
     pthread_create(&table->thread[index], NULL, ft_philo_routine, &(table->philosophers_list[index]));
 }
@@ -58,12 +57,12 @@ int     main(int ac, char **av)
         ft_usleep(10);
         index++;
     }
-    ft_usleep(10);
     ft_monitor_routine(&table);
     index = 0;
     while (index < table.philosophers_number)
     {
         pthread_join(table.thread[index], NULL);
+        pthread_mutex_destroy(&table.philosophers_list[index].mutex);
         ft_usleep(10);
         index++;
     }

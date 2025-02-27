@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/02/27 10:49:18 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/02/27 19:19:05 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,30 @@ void    ft_monitor_routine(t_table *table)
     int         index;
     index = 0;
 
-    while (index < table->philosophers_number)
+    while (1)
     {
-        if (!ft_philo_is_alived(&table->philosophers_list[index]))
+        index = 0;
+        while (index < table->philosophers_number)
         {
-            ft_kill_all_philos(table);
-            printf("%ld %d has died\n", ft_get_current_time(), index);
-            break;
+            if (!ft_philo_is_alived(&table->philosophers_list[index]))
+            {
+                ft_kill_all_philos(table);
+                printf("%ld %d has died\n", ft_get_current_time(), index);
+                return;
+            }
+            if (ft_get_action(&table->philosophers_list[index]) == WAIT && table->forks >= 2)
+            {
+                table->forks -= 2;
+                ft_set_action(&table->philosophers_list[index], GETTING);
+            }
+            if (ft_get_action(&table->philosophers_list[index]) == RETURNED)
+            {
+                table->forks += 2;
+                ft_set_action(&table->philosophers_list[index], NUL);
+            }
+            index++;
         }
-        if (ft_get_action(&table->philosophers_list[index]) == WAIT && table->forks >= 2)
-        {
-            table->forks -= 2;
-            ft_set_action(&table->philosophers_list[index], GETTING);
-        }
-        if (ft_get_action(&table->philosophers_list[index]) == RETURNED)
-        {
-            table->forks += 2;
-            ft_set_action(&table->philosophers_list[index], NUL);
-        }
-        index++;
-        if (index == table->philosophers_number)
-            index = 0;
+        ft_usleep(1);
     }
+    
 }

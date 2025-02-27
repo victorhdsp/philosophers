@@ -42,9 +42,9 @@ void        ft_set_lifetime(t_philosopher *philo, long value);
 long        ft_get_lifetime(t_philosopher *philo);
 
 long        ft_atol(const char *value);
-char        *ft_itoa(const int value);
+char        *ft_ltoa(const long value);
 void        *ft_calloc(int size, int weight);
-int         ft_is_digit(int c);
+int         ft_strlen(char *str);
 
 void        ft_monitor_routine(t_table *table);
 int         ft_philo_is_alived(t_philosopher *philo);
