@@ -24,6 +24,7 @@ typedef struct  s_philosopher
     long            time_to_eat;
     long            time_to_sleep;
     int             hungry_size;
+    long            started_at;
 }               t_philosopher;
 
 typedef struct  s_table
@@ -40,6 +41,7 @@ long        ft_get_current_time();
 void        ft_usleep(int value);
 void        ft_set_lifetime(t_philosopher *philo, long value);
 long        ft_get_lifetime(t_philosopher *philo);
+void        ft_get_time(int sleep_time, long *current_time);
 
 long        ft_atol(const char *value);
 char        *ft_ltoa(const long value);

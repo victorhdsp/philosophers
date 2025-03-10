@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 10:03:55 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/02/27 09:56:09 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/10 12:25:38 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,12 @@ void    ft_usleep(int value)
 
     time = ft_get_current_time() + value;
     while (ft_get_current_time() < time);    
+}
+
+void    ft_get_time(int sleep_time, long *current_time)
+{
+    long diff_time;
+    diff_time = ft_get_current_time() - *current_time;
+    ft_usleep(sleep_time);
+    *current_time = ft_get_current_time() - diff_time;
 }

@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:47:03 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/02/27 19:18:38 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/10 11:07:14 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,12 @@ void     ft_start_philosopher(char **av, int index, t_table *table)
         philo.hungry_size = ft_atol(av[5]);
     else
         philo.hungry_size = -1;
+    philo.started_at = table->start_at;
     table->philosophers_list[index] = philo;
     pthread_mutex_init(&table->philosophers_list[index].mutex, NULL);
     philo.id = -3;
     pthread_create(&table->thread[index], NULL, ft_philo_routine, &(table->philosophers_list[index]));
+    table->start_at = ft_get_current_time();
 }
 
 int     main(int ac, char **av)
