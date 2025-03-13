@@ -1,17 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   learning_time.c                                    :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/10 18:17:45 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/12 13:17:34 by vide-sou         ###   ########.fr       */
+/*   Created: 2025/02/25 10:03:55 by vide-sou          #+#    #+#             */
+/*   Updated: 2025/03/10 12:25:38 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <sys/time.h>
+#include "philo.h"
+
+void	ft_set_lifetime(t_philosopher *philo, long value)
+{
+	pthread_mutex_lock(&philo->mutex);
+	philo->lifetime = value;
+	pthread_mutex_unlock(&philo->mutex);
+}
+
+long	ft_get_lifetime(t_philosopher *philo)
+{
+	long	getting;
+
+	getting = 0;
+	pthread_mutex_lock(&philo->mutex);
+	getting = philo->lifetime;
+	pthread_mutex_unlock(&philo->mutex);
+	return (getting);
+}
 
 long	ft_get_current_time(void)
 {
@@ -39,22 +56,4 @@ void	ft_get_time(int sleep_time, long *current_time)
 	diff_time = ft_get_current_time() - *current_time;
 	ft_usleep(sleep_time);
 	*current_time = ft_get_current_time() - diff_time;
-}
-
-int	main(void)
-{
-	long started_at;
-	long finish_time;
-	long current_time;
-
-	current_time = ft_get_current_time();
-	finish_time = current_time + 800;
-	started_at = current_time;
-	while (finish_time > current_time)
-	{
-		printf("cur time: %ld\n", current_time);
-		ft_get_time(500, &current_time);
-		finish_time = current_time + 800;
-	}
-	printf("exited\n");
 }

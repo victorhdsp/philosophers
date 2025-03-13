@@ -1,0 +1,232 @@
+#ifndef PHILO_H
+# define PHILO_H
+
+# include <pthread.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/time.h>
+# include <unistd.h>
+
+# define NUL 0
+# define WAIT 1
+# define GETTED 2
+# define EATING 3
+# define EATED 4
+# define SLEEPY 5
+# define SLEEPED 6
+# define UNHUNGRY 7
+# define DEAD 8
+
+typedef struct s_philosopher
+{
+	pthread_t		thread;
+	int				index;
+	int				action;
+	int				alived;
+	long			time_to_eat;
+	long			time_to_sleep;
+	int				hungry_size;
+	long			last_eating;
+	long			current_time;
+	pthread_mutex_t	mutex;
+}					t_philosopher;
+
+typedef struct s_table
+{
+	t_philosopher	**philosophers_list;
+	int				philosophers_number;
+	long			time_to_die;
+	int				forks;
+}					t_table;
+
+long				ft_get_timestamp(void);
+void				ft_usleep(int value);
+
+long				ft_atol(const char *value);
+char				*ft_ltoa(const long value);
+void				*ft_calloc(int size, int weight);
+int					ft_strlen(char *str);
+
+void				ft_monitor_routine(t_table *table);
+
+void				*ft_philo_routine(void *arg);
+void				ft_set_action(t_philosopher *philo, int value);
+int					ft_get_action(t_philosopher *philo);
+void				ft_set_current_time(t_philosopher *philo, long value);
+long				ft_get_current_time(t_philosopher *philo);
+
+int					toWaitAction (t_philosopher *philo, int index, long current_time);
+int					toGettingAction (t_table *table, t_philosopher *philo, int index, long current_time);
+int					toEatingAction (t_philosopher *philo, int index, long current_time);
+int					toSleepyAction (t_table *table, t_philosopher *philo, int index, long current_time);
+int					toNulAction (t_philosopher *philo);
+
+void				toEatedAction (t_philosopher *philo);
+void				toSleepedAction (t_philosopher *philo);
+
+#endif
+
+#include <stdio.h>
+#include <sys/time.h>
+
+long	ft_get_current_time(void)
+{
+	struct timeval	tv;
+	long			result;
+
+	gettimeofday(&tv, 0);
+	result = (tv.tv_sec * 1000000) + tv.tv_usec;
+	return (result);
+}
+
+void	ft_usleep(int value)
+{
+	long	time;
+
+	time = ft_get_current_time() + value;
+	while (ft_get_current_time() < time)
+		;
+}
+
+void	ft_get_time(int sleep_time, long *current_time)
+{
+	long	diff_time;
+
+	diff_time = ft_get_current_time() - *current_time;
+	ft_usleep(sleep_time);
+	*current_time = ft_get_current_time() - diff_time;
+}
+
+void	*ft_philo_routine(void *arg)
+{
+	int	action;
+
+	action = 0;
+}
+
+int	main(void)
+{
+	long started_at;
+	long finish_time;
+	long current_time;
+
+	current_time = ft_get_current_time();
+	finish_time = current_time + 800;
+	started_at = current_time;
+	while (finish_time > current_time)
+	{
+		printf("cur time: %ld\n", current_time);
+		ft_get_time(500, &current_time);
+		finish_time = current_time + 800;
+	}
+	printf("exited\n");
+}
+
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+typedef struct s_data
+{
+	pthread_mutex_t	mutex;
+	int				count;
+}					t_data;
+
+static void	ft_t_imp_increment(t_data *data, int value)
+{
+	pthread_mutex_lock(&data->mutex);
+	data->count += value;
+	pthread_mutex_unlock(&data->mutex);
+}
+
+void	*ft_start_routine(void *arg)
+{
+	int	index;
+
+	index = 0;
+	ft_t_imp_increment(arg, 1);
+	usleep(100);
+	ft_t_imp_increment(arg, 1);
+	usleep(100);
+	ft_t_imp_increment(arg, 1);
+	usleep(100);
+	return ("ok");
+}
+
+int	main(void)
+{
+	pthread_mutex_t	mutex;
+	int				num_threads;
+	pthread_t		thread_id[num_threads];
+	int				index;
+	t_data			data;
+
+	mutex = PTHREAD_MUTEX_INITIALIZER;
+	num_threads = 30;
+	index = 0;
+	(&data)->count = 0;
+	(&data)->mutex = mutex;
+	while (index < num_threads)
+	{
+		pthread_create(&thread_id[index], NULL, &ft_start_routine, &data);
+		index++;
+	}
+	index = 0;
+	while (index < num_threads)
+	{
+		pthread_join(thread_id[index], NULL);
+		index++;
+	}
+	printf("count: %d\n", data.count);
+	return (0);
+}
+
+#include <stdio.h>
+#include <sys/time.h>
+
+long	ft_get_current_time(void)
+{
+	struct timeval	tv;
+	long			result;
+
+	gettimeofday(&tv, 0);
+	result = (tv.tv_sec * 1000000) + tv.tv_usec;
+	return (result);
+}
+
+void	ft_usleep(int value)
+{
+	long	time;
+
+	time = ft_get_current_time() + value;
+	while (ft_get_current_time() < time)
+		;
+}
+
+void	ft_get_time(int sleep_time, long *current_time)
+{
+	long	diff_time;
+
+	diff_time = ft_get_current_time() - *current_time;
+	ft_usleep(sleep_time);
+	*current_time = ft_get_current_time() - diff_time;
+}
+
+int	main(void)
+{
+	long started_at;
+	long finish_time;
+	long current_time;
+
+	current_time = ft_get_current_time();
+	finish_time = current_time + 800;
+	started_at = current_time;
+	while (finish_time > current_time)
+	{
+		printf("cur time: %ld\n", current_time);
+		ft_get_time(500, &current_time);
+		finish_time = current_time + 800;
+	}
+	printf("exited\n");
+}

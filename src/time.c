@@ -6,52 +6,28 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 10:03:55 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/10 12:25:38 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/13 00:18:53 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void    ft_set_lifetime(t_philosopher *philo, long value)
+timestamp	ft_get_timestamp(void)
 {
-    pthread_mutex_lock(&philo->mutex);
-    philo->lifetime = value;
-    pthread_mutex_unlock(&philo->mutex);
+	struct timeval	tv;
+	timestamp			result;
+
+	gettimeofday(&tv, 0);
+	result = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+	return (result);
 }
 
-long    ft_get_lifetime(t_philosopher *philo)
+void	ft_usleep(int value)
 {
-    long     getting;
+	timestamp	time;
 
-    getting = 0;
-    pthread_mutex_lock(&philo->mutex);
-    getting = philo->lifetime;
-    pthread_mutex_unlock(&philo->mutex);
-    return (getting);
+	time = ft_get_timestamp() + value;
+	while (ft_get_timestamp() < time)
+		;
 }
 
-long    ft_get_current_time()
-{
-    struct timeval  tv;
-    long            result;
-
-    gettimeofday(&tv, 0);
-    result = (tv.tv_sec * 1000000) + tv.tv_usec;
-    return (result);
-}
-
-void    ft_usleep(int value)
-{
-    long    time;
-
-    time = ft_get_current_time() + value;
-    while (ft_get_current_time() < time);    
-}
-
-void    ft_get_time(int sleep_time, long *current_time)
-{
-    long diff_time;
-    diff_time = ft_get_current_time() - *current_time;
-    ft_usleep(sleep_time);
-    *current_time = ft_get_current_time() - diff_time;
-}

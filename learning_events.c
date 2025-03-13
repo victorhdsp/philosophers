@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   learning_time.c                                    :+:      :+:    :+:   */
+/*   learning_events.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:17:45 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/12 13:17:34 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/10 18:24:00 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,13 @@ void	ft_get_time(int sleep_time, long *current_time)
 	diff_time = ft_get_current_time() - *current_time;
 	ft_usleep(sleep_time);
 	*current_time = ft_get_current_time() - diff_time;
+}
+
+void	*ft_philo_routine(void *arg)
+{
+	int	action;
+
+	action = 0;
 }
 
 int	main(void)

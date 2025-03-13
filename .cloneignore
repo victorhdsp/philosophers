@@ -1,2 +1,9 @@
 *.pdf
 learning*
+*.md
+*.o
+*.a
+*.out
+philo
+.vscode
+LazyPhilosophersTester
