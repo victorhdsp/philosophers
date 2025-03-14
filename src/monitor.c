@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/14 11:17:34 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/14 12:13:45 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	ft_observer_philosopher(t_table *table, int index,
 	if (current_action == UNHUNGRY)
 		return (0);
 	if (ft_get_current_time(philo) - philo->last_eating > table->time_to_die)
-		return (printf("%lld %d has died\n", current_time, index));
+		return (ft_locked_printf(current_time, index, "has died"));
 	*finished = 0;
 	if (current_action == WAIT && table->forks >= 2)
 		return (to_getting_action(table, philo, index, current_time));

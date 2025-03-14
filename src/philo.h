@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:17:12 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/14 11:14:15 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/14 12:14:32 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void				ft_usleep(int value);
 long				ft_atol(const char *value);
 void				*ft_calloc(int size, int weight);
 int					ft_strlen(char *str);
+int					ft_locked_printf(t_timestamp current_time, int index,
+						char *msg);
 
 void				ft_monitor_routine(t_table *table);
 
@@ -82,5 +84,7 @@ int					to_nul_action(t_philosopher *philo);
 
 void				to_eated_action(t_philosopher *philo);
 void				to_sleeped_action(t_philosopher *philo);
+
+char				*ft_join_multiple(char **strs);
 
 #endif

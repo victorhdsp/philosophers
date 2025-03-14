@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/14 11:14:15 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/14 12:13:57 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,14 @@ int	to_wait_action(t_philosopher *philo, int index, t_timestamp current_time)
 	ft_set_action(philo, WAIT);
 	if (philo->hungry_size == 0)
 		ft_set_action(philo, UNHUNGRY);
-	return (printf("%lld %d has thinking\n", current_time, index));
+	ft_locked_printf(current_time, index, "has thinking");
+	return (1);
 }
 
 int	to_eating_action(t_philosopher *philo, int index, t_timestamp current_time)
 {
 	ft_set_action(philo, EATING);
-	printf("%lld %d has eating\n", current_time, index);
+	ft_locked_printf(current_time, index, "has eating");
 	philo->hungry_size--;
 	philo->last_eating = current_time;
 	return (1);

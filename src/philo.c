@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/14 11:14:15 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:26:00 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	*ft_philo_routine(void *arg)
 		&& ft_get_current_time(philo)
 		- philo->last_eating <= philo->time_to_die)
 	{
+		ft_set_current_time(philo, ft_get_timestamp());
 		current_action = ft_get_action(philo);
 		if (current_action == NUL)
 			to_wait_action(philo, philo->index, ft_get_current_time(philo));
@@ -70,7 +71,7 @@ void	*ft_philo_routine(void *arg)
 			to_sleeped_action(philo);
 		else if (current_action == SLEEPED)
 			to_nul_action(philo);
-		ft_set_current_time(philo, ft_get_timestamp());
+		ft_usleep(1);
 	}
 	return ("ok");
 }
