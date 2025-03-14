@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:17:12 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/12 23:52:31 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/14 11:14:15 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 # define UNHUNGRY 7
 # define DEAD 8
 
-# define timestamp long long
+typedef long long	t_timestamp;
 
 typedef struct s_philosopher
 {
@@ -37,11 +37,12 @@ typedef struct s_philosopher
 	int				index;
 	int				action;
 	int				alived;
-	timestamp		time_to_eat;
-	timestamp		time_to_sleep;
+	t_timestamp		time_to_eat;
+	t_timestamp		time_to_sleep;
+	t_timestamp		time_to_die;
 	int				hungry_size;
-	timestamp		last_eating;
-	timestamp		current_time;
+	t_timestamp		last_eating;
+	t_timestamp		current_time;
 	pthread_mutex_t	mutex;
 }					t_philosopher;
 
@@ -49,15 +50,14 @@ typedef struct s_table
 {
 	t_philosopher	**philosophers_list;
 	int				philosophers_number;
-	timestamp		time_to_die;
+	t_timestamp		time_to_die;
 	int				forks;
 }					t_table;
 
-timestamp			ft_get_timestamp(void);
+t_timestamp			ft_get_timestamp(void);
 void				ft_usleep(int value);
 
 long				ft_atol(const char *value);
-char				*ft_ltoa(const long value);
 void				*ft_calloc(int size, int weight);
 int					ft_strlen(char *str);
 
@@ -66,16 +66,21 @@ void				ft_monitor_routine(t_table *table);
 void				*ft_philo_routine(void *arg);
 void				ft_set_action(t_philosopher *philo, int value);
 int					ft_get_action(t_philosopher *philo);
-void				ft_set_current_time(t_philosopher *philo, timestamp value);
-timestamp			ft_get_current_time(t_philosopher *philo);
+void				ft_set_current_time(t_philosopher *philo,
+						t_timestamp value);
+t_timestamp			ft_get_current_time(t_philosopher *philo);
 
-int					toWaitAction (t_philosopher *philo, int index, timestamp current_time);
-int					toGettingAction (t_table *table, t_philosopher *philo, int index, timestamp current_time);
-int					toEatingAction (t_philosopher *philo, int index, timestamp current_time);
-int					toSleepyAction (t_table *table, t_philosopher *philo, int index, timestamp current_time);
-int					toNulAction (t_philosopher *philo);
+int					to_wait_action(t_philosopher *philo, int index,
+						t_timestamp current_time);
+int					to_getting_action(t_table *table, t_philosopher *philo,
+						int index, t_timestamp current_time);
+int					to_eating_action(t_philosopher *philo, int index,
+						t_timestamp current_time);
+int					to_sleepy_action(t_table *table, t_philosopher *philo,
+						int index, t_timestamp current_time);
+int					to_nul_action(t_philosopher *philo);
 
-void				toEatedAction (t_philosopher *philo);
-void				toSleepedAction (t_philosopher *philo);
+void				to_eated_action(t_philosopher *philo);
+void				to_sleeped_action(t_philosopher *philo);
 
 #endif

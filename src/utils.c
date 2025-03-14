@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:22:58 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/02/27 11:42:07 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/13 05:01:39 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,35 +44,6 @@ long	ft_atol(const char *value)
 		index++;
 	}
 	return (result * minus);
-}
-
-char	*ft_ltoa(const long value)
-{
-	char	*result;
-	long	tmp;
-	int		index;
-
-	index = 0;
-	tmp = value;
-	if (tmp == 0)
-		index = 1;
-	while (tmp > 0)
-	{
-		tmp = tmp / 10;
-		index++;
-	}
-	result = ft_calloc(index + 1, sizeof(char));
-	if (!result)
-		return (NULL);
-	result[index] = '\0';
-	tmp = value;
-	while (index > 0)
-	{
-		index--;
-		result[index] = '0' + tmp % 10;
-		tmp = tmp / 10;
-	}
-	return (result);
 }
 
 void	*ft_calloc(int size, int weight)

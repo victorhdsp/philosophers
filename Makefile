@@ -1,6 +1,6 @@
 NAME=philo
-FILES=./src/main.o ./src/time.o ./src/monitor.o ./src/philo.o ./src/utils.o ./src/philo_actions.o
-CC=cc -Wall -Wextra -ggdb
+FILES=./src/main.o ./src/time.o ./src/monitor.o ./src/philo.o ./src/utils.o ./src/philo_actions.o ./src/monitor_actions.o
+CC=cc -Wall -Wextra -ggdb -O0
 
 all: $(NAME)
 

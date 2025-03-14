@@ -6,13 +6,13 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/12 23:52:48 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/14 11:16:57 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void		ft_kill_philosophers (t_table *table)
+void	ft_kill_philosophers(t_table *table)
 {
 	int				index;
 	t_philosopher	*philo;
@@ -26,30 +26,31 @@ void		ft_kill_philosophers (t_table *table)
 	}
 }
 
-static int	ft_observer_philosopher(t_table *table, int index, timestamp current_time, timestamp time_to_die, int *finished)
+static int	ft_observer_philosopher(t_table *table, int index,
+		t_timestamp current_time, int *finished)
 {
 	t_philosopher	*philo;
-	int		current_action;
+	int				current_action;
 
 	philo = table->philosophers_list[index];
 	current_action = ft_get_action(philo);
 	if (current_action == UNHUNGRY)
-		return 0;
-	if (philo->current_time - philo->last_eating > time_to_die)
-		return printf("%lld %d has died\n", current_time, index);
+		return (0);
+	if (ft_get_current_time(philo) - philo->last_eating > table->time_to_die)
+		return (printf("%lld %d has died\n", current_time, index));
 	*finished = 0;
 	if (current_action == WAIT && table->forks >= 2)
-		return (toGettingAction(table, philo, index, current_time));
+		return (to_getting_action(table, philo, index, current_time));
 	if (current_action == EATED)
-		return (toSleepyAction(table, philo, index, current_time));
+		return (to_sleepy_action(table, philo, index, current_time));
 	return (1);
 }
 
 void	ft_monitor_routine(t_table *table)
 {
-	int				index;
-	int				finished;
-	timestamp		current_time;
+	int			index;
+	int			finished;
+	t_timestamp	current_time;
 
 	finished = 0;
 	while (!finished)
@@ -59,9 +60,8 @@ void	ft_monitor_routine(t_table *table)
 		while (index < table->philosophers_number && !finished)
 		{
 			finished = 1;
-			if (table->philosophers_list[index]->last_eating == -1)
-				table->philosophers_list[index]->last_eating = current_time;
-			ft_observer_philosopher(table, index, current_time, table->time_to_die, &finished);
+			ft_observer_philosopher(table, index, current_time,
+				table->time_to_die, &finished);
 			index++;
 		}
 	}

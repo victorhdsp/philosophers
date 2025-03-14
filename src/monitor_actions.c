@@ -1,37 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   monitor_actions.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/25 10:03:55 by vide-sou          #+#    #+#             */
+/*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
 /*   Updated: 2025/03/14 11:14:15 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_timestamp	ft_get_timestamp(void)
+int	to_getting_action(t_table *table, t_philosopher *philo, int index,
+		t_timestamp current_time)
 {
-	struct timeval	tv;
-	t_timestamp		result;
-
-	gettimeofday(&tv, 0);
-	result = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-	return (result);
+	ft_set_action(philo, GETTED);
+	table->forks -= 2;
+	printf("%lld %d has getted 1 fork\n", current_time, index);
+	return (printf("%lld %d has getted 1 fork\n", current_time, index));
 }
 
-void	ft_usleep(int value)
+int	to_sleepy_action(t_table *table, t_philosopher *philo, int index,
+		t_timestamp current_time)
 {
-	t_timestamp	finish_time;
-	t_timestamp	current_time;
-
-	current_time = ft_get_timestamp();
-	finish_time = current_time + value;
-	while (current_time < finish_time)
-	{
-		usleep((finish_time - current_time) / 2);
-		current_time = ft_get_timestamp();
-	}
+	ft_set_action(philo, SLEEPY);
+	table->forks += 2;
+	return (printf("%lld %d has sleeping\n", current_time, index));
 }

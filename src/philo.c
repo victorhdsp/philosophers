@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/12 23:49:57 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/14 11:14:15 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,16 @@ int	ft_get_action(t_philosopher *philo)
 	return (getting);
 }
 
-void	ft_set_current_time(t_philosopher *philo, timestamp value)
+void	ft_set_current_time(t_philosopher *philo, t_timestamp value)
 {
 	pthread_mutex_lock(&philo->mutex);
 	philo->current_time = value;
 	pthread_mutex_unlock(&philo->mutex);
 }
 
-timestamp	ft_get_current_time(t_philosopher *philo)
+t_timestamp	ft_get_current_time(t_philosopher *philo)
 {
-	timestamp	getting;
+	t_timestamp	getting;
 
 	getting = -1;
 	pthread_mutex_lock(&philo->mutex);
@@ -55,19 +55,21 @@ void	*ft_philo_routine(void *arg)
 
 	philo = (t_philosopher *)arg;
 	current_action = -1;
-	while (current_action != DEAD && current_action != UNHUNGRY)
+	while (current_action != DEAD && current_action != UNHUNGRY
+		&& ft_get_current_time(philo)
+		- philo->last_eating <= philo->time_to_die)
 	{
 		current_action = ft_get_action(philo);
 		if (current_action == NUL)
-			toWaitAction(philo, philo->index, philo->current_time);
+			to_wait_action(philo, philo->index, ft_get_current_time(philo));
 		else if (current_action == GETTED)
-			toEatingAction(philo, philo->index, philo->current_time);
+			to_eating_action(philo, philo->index, ft_get_current_time(philo));
 		else if (current_action == EATING)
-			toEatedAction(philo);
+			to_eated_action(philo);
 		else if (current_action == SLEEPY)
-			toSleepedAction(philo);
+			to_sleeped_action(philo);
 		else if (current_action == SLEEPED)
-			toNulAction(philo);
+			to_nul_action(philo);
 		ft_set_current_time(philo, ft_get_timestamp());
 	}
 	return ("ok");
