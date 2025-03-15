@@ -64,6 +64,7 @@
     "stdlib.h": "c",
     "stdio.h": "c",
     "random": "c",
-    "out": "cpp"
+    "out": "cpp",
+    "type_traits": "c"
   }
 }

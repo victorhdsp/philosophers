@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:22:58 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/14 14:15:18 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:53:59 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_join_multiple(char **strs)
 		size += ft_strlen(strs[index]);
 		index++;
 	}
-	result = ft_calloc(size, sizeof(char));
+	result = ft_calloc(size + 1, sizeof(char));
 	if (!result)
 		return (NULL);
 	index = 0;

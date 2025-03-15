@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:17:12 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/14 12:14:32 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/15 08:40:11 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_table
 	int				philosophers_number;
 	t_timestamp		time_to_die;
 	int				forks;
+	int				finish;
 }					t_table;
 
 t_timestamp			ft_get_timestamp(void);
@@ -60,8 +61,8 @@ void				ft_usleep(int value);
 long				ft_atol(const char *value);
 void				*ft_calloc(int size, int weight);
 int					ft_strlen(char *str);
-int					ft_locked_printf(t_timestamp current_time, int index,
-						char *msg);
+int					ft_locked_printf(t_table *table, t_timestamp current_time,
+						int index, char *msg);
 
 void				ft_monitor_routine(t_table *table);
 
@@ -72,12 +73,12 @@ void				ft_set_current_time(t_philosopher *philo,
 						t_timestamp value);
 t_timestamp			ft_get_current_time(t_philosopher *philo);
 
-int					to_wait_action(t_philosopher *philo, int index,
-						t_timestamp current_time);
+int					to_wait_action(t_table *table, t_philosopher *philo,
+						int index, t_timestamp current_time);
 int					to_getting_action(t_table *table, t_philosopher *philo,
 						int index, t_timestamp current_time);
-int					to_eating_action(t_philosopher *philo, int index,
-						t_timestamp current_time);
+int					to_eating_action(t_table *table, t_philosopher *philo,
+						int index, t_timestamp current_time);
 int					to_sleepy_action(t_table *table, t_philosopher *philo,
 						int index, t_timestamp current_time);
 int					to_nul_action(t_philosopher *philo);

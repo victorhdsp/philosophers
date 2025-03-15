@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:22:58 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/14 14:18:56 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/15 08:39:06 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,15 @@ void	*ft_calloc(int size, int weight)
 	return ((void *)result);
 }
 
-int	ft_locked_printf(t_timestamp current_time, int index, char *msg)
+int	ft_locked_printf(t_table *table, t_timestamp current_time, int index,
+		char *msg)
 {
 	int		size;
 	char	*arr[7];
 	char	*result;
 
+	if (table->finish)
+		return (0);
 	arr[0] = ft_ttoa(current_time);
 	arr[1] = " ";
 	arr[2] = ft_ttoa(index);
@@ -106,5 +109,8 @@ int	ft_locked_printf(t_timestamp current_time, int index, char *msg)
 	result = ft_join_multiple(arr);
 	size = 0;
 	size += write(1, result, ft_strlen(result));
+	free(arr[0]);
+	free(arr[2]);
+	free(result);
 	return (size);
 }
