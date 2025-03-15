@@ -25,6 +25,59 @@
         }
       ],
       "enableMultiThread": true
+    },
+    {
+      "type": "lldb",
+      "request": "attach",
+      "name": "Attach",
+      "autoAttachChildProcess": true,
+      "pid": "${command:pickMyProcess}"
+    },
+    {
+      "name": "C/C++ Runner: Debug Session Bonus",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [
+        "5",
+        "800",
+        "200",
+        "200"
+      ],
+      "stopAtEntry": false,
+      "externalConsole": false,
+      "cwd": "/home/vide-sou/projetos/pessoal/rank3/philosophers/github",
+      "program": "/home/vide-sou/projetos/pessoal/rank3/philosophers/github/philo_bonus",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+          {
+              "description": "Habilitar suporte a subprocessos",
+              "text": "-enable-pretty-printing",
+              "ignoreFailures": true
+          }
+      ],
+      "autoAttachChildProcess": true,
+      "subProcess": true,
+    },
+    {
+      "name": "C/C++ Runner: Debug Session Fork",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": false,
+      "cwd": "/home/vide-sou/projetos/pessoal/rank3/philosophers/github",
+      "program": "/home/vide-sou/projetos/pessoal/rank3/philosophers/github/a.out",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "enableMultiThread": true
     }
   ]
 }

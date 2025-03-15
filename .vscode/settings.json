@@ -65,6 +65,7 @@
     "stdio.h": "c",
     "random": "c",
     "out": "cpp",
-    "type_traits": "c"
+    "type_traits": "c",
+    "philo_bonus.h": "c"
   }
 }
