@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/15 09:43:52 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/15 09:54:54 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ int	to_eating_action(t_table *table, t_philosopher *philo, int index,
 	ft_locked_printf(table, current_time, index, "has eating");
 	ft_set_action(philo, EATING);
 	philo->hungry_size--;
-	philo->last_eating = current_time;
+	ft_set_last_eating(philo, philo->current_time);
 	return (1);
 }
