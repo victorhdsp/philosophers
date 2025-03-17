@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/15 15:00:27 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:14:01 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,26 @@ static void	ft_kill_philosophers(t_table *table, t_timestamp current_time,
 {
 	int				index;
 	t_philosopher	*philo;
+	int				hunger;
+	int				current_action;
 
 	index = 0;
+	hunger = 0;
 	while (index < table->philosophers_number)
 	{
 		*finished = index + 1;
 		philo = table->philosophers_list[index];
-		if (current_time - ft_get_last_eating(philo) > table->time_to_die)
+		current_action = ft_get_action(philo);
+		if (current_time - ft_get_last_eating(philo) > table->time_to_die
+			&& current_action != UNHUNGRY)
 			return ;
 		*finished = 0;
+		if (current_action == UNHUNGRY)
+			hunger++;
 		index++;
 	}
+	if (hunger == table->philosophers_number)
+		*finished = table->philosophers_number + 1;
 }
 
 static int	ft_observer_philosopher(t_table *table, int index,
@@ -93,5 +102,6 @@ void	ft_monitor_routine(t_table *table)
 			index++;
 		}
 	}
-	printf("%lld %i has died\n", current_time, finished - 1);
+	if (finished < table->philosophers_number + 1)
+		printf("%lld %i has died\n", current_time, finished - 1);
 }

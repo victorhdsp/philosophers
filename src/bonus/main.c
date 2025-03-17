@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 10:40:05 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/15 14:45:59 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:46:05 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,26 @@ static void	start_table(t_table *table, t_system *sys, char **av)
 		finish_table(sys);
 }
 
-static void	kill_philosophers(t_table table)
+static void	kill_philosophers(t_system sys, t_table table)
 {
 	int	index;
+	int	pid_status;
+	int	hungred;
 
+	hungred = 0;
+	index = 0;
+	while (index < table.philosophers_number)
+	{
+		waitpid(table.pid[index], &pid_status, 0);
+		if (WEXITSTATUS(pid_status) == 1)
+			hungred++;
+		else if (WEXITSTATUS(pid_status) == 0)
+			break ;
+		if (hungred == table.philosophers_number - 1)
+			sem_post(sys.finish);
+		index++;
+	}
+	sem_wait(sys.finish);
 	index = 0;
 	while (index < table.philosophers_number)
 	{
@@ -78,7 +94,6 @@ int	main(int ac, char **av)
 		index++;
 		ft_usleep(10);
 	}
-	sem_wait(sys.finish);
-	kill_philosophers(table);
+	kill_philosophers(sys, table);
 	finish_table(&sys);
 }

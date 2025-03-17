@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 10:40:05 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/15 14:54:04 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:31:18 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	philo_routine(t_table table, sem_t *forks, sem_t *finish, int index)
 	{
 		sem_post(finish);
 		printf("%lld %d has dead\n", philo.current_time, philo.index);
+		exit(EXIT_SUCCESS);
 	}
-	exit(EXIT_SUCCESS);
+	exit(1);
 }

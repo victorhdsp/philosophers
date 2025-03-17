@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/15 14:52:08 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:12:32 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ int	to_sleepy_action(sem_t *forks, t_philosopher *philo)
 
 int	to_wait_action(t_philosopher *philo)
 {
-	printf("%lld %d has thinking\n", philo->current_time, philo->index);
 	philo->current_action = WAIT;
 	if (philo->hungry_size == 0)
 		philo->current_action = UNHUNGRY;
+	else
+		printf("%lld %d has thinking\n", philo->current_time, philo->index);
 	return (1);
 }
 

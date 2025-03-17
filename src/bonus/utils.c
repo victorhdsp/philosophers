@@ -6,9 +6,11 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:22:58 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/15 12:20:09 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:15:37 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "philo_bonus.h"
 
 long	ft_atol(const char *value)
 {
@@ -41,6 +43,8 @@ void	*ft_calloc(int size, int weight)
 
 	index = 0;
 	result = malloc(size * weight);
+	if (!result)
+		return (NULL);
 	while (index < size * weight)
 	{
 		result[index] = 0;
