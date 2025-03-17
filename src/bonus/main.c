@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 10:40:05 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/17 15:46:05 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:59:26 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static void	finish_table(t_system *sys)
 {
 	sem_unlink(sys->sem_forks_name);
-	sem_unlink(sys->sem_finish_name);
 	exit(EXIT_SUCCESS);
 }
 
@@ -24,7 +23,6 @@ static void	start_table(t_table *table, t_system *sys, char **av)
 	int	index;
 
 	sem_unlink(sys->sem_forks_name);
-	sem_unlink(sys->sem_finish_name);
 	index = 0;
 	table->philosophers_number = ft_atol(av[1]);
 	table->time_to_die = ft_atol(av[2]);
@@ -39,31 +37,21 @@ static void	start_table(t_table *table, t_system *sys, char **av)
 			ft_atol(av[1]));
 	if (sys->forks == SEM_FAILED)
 		finish_table(sys);
-	sys->finish = sem_open(sys->sem_finish_name, O_CREAT | O_EXCL, 0644, 0);
-	if (sys->finish == SEM_FAILED)
-		finish_table(sys);
 }
 
-static void	kill_philosophers(t_system sys, t_table table)
+static void	kill_philosophers(t_table table)
 {
 	int	index;
 	int	pid_status;
-	int	hungred;
 
-	hungred = 0;
 	index = 0;
 	while (index < table.philosophers_number)
 	{
 		waitpid(table.pid[index], &pid_status, 0);
-		if (WEXITSTATUS(pid_status) == 1)
-			hungred++;
-		else if (WEXITSTATUS(pid_status) == 0)
+		if (WEXITSTATUS(pid_status) == EXIT_SUCCESS)
 			break ;
-		if (hungred == table.philosophers_number - 1)
-			sem_post(sys.finish);
 		index++;
 	}
-	sem_wait(sys.finish);
 	index = 0;
 	while (index < table.philosophers_number)
 	{
@@ -79,7 +67,6 @@ int	main(int ac, char **av)
 	int			index;
 
 	sys.sem_forks_name = "forks";
-	sys.sem_finish_name = "finish";
 	if (ac > 6 || ac < 5)
 		return (-1);
 	start_table(&table, &sys, av);
@@ -90,10 +77,10 @@ int	main(int ac, char **av)
 		if (table.pid[index] < 0)
 			finish_table(&sys);
 		if (table.pid[index] == 0)
-			philo_routine(table, sys.forks, sys.finish, index);
+			philo_routine(table, sys.forks, index);
 		index++;
 		ft_usleep(10);
 	}
-	kill_philosophers(sys, table);
+	kill_philosophers(table);
 	finish_table(&sys);
 }

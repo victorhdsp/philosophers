@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:17:12 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/17 15:32:34 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:58:49 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,7 @@ typedef long long	t_timestamp;
 typedef struct s_system
 {
 	char			*sem_forks_name;
-	char			*sem_finish_name;
 	sem_t			*forks;
-	sem_t			*finish;
 }					t_system;
 
 typedef struct s_table
@@ -74,7 +72,6 @@ void				*ft_calloc(int size, int weight);
 
 void				ft_observer_philosopher(t_table table, t_philosopher *philo,
 						sem_t *forks);
-void				philo_routine(t_table table, sem_t *forks, sem_t *finish,
-						int index);
+void				philo_routine(t_table table, sem_t *forks, int index);
 
 #endif

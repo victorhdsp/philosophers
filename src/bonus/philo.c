@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 10:40:05 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/17 15:31:18 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:57:17 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_observer_philosopher(t_table table, t_philosopher *philo,
 		philo->current_action = NUL;
 }
 
-void	philo_routine(t_table table, sem_t *forks, sem_t *finish, int index)
+void	philo_routine(t_table table, sem_t *forks, int index)
 {
 	t_philosopher	philo;
 
@@ -47,9 +47,8 @@ void	philo_routine(t_table table, sem_t *forks, sem_t *finish, int index)
 	}
 	if (philo.current_action != UNHUNGRY)
 	{
-		sem_post(finish);
 		printf("%lld %d has dead\n", philo.current_time, philo.index);
 		exit(EXIT_SUCCESS);
 	}
-	exit(1);
+	exit(EXIT_FAILURE);
 }
