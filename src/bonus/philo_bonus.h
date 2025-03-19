@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:17:12 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/18 16:05:42 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:02:53 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
-# include <unistd.h>
 # include <sys/wait.h>
+# include <unistd.h>
 
 # define NUL 0
 # define WAIT 1
@@ -78,6 +78,7 @@ char				*ft_ttoa(const t_timestamp value);
 void				ft_observer_philosopher(t_table table, t_philosopher *philo,
 						sem_t *forks);
 void				philo_routine(t_table table, t_system sys, int index);
-void				finish_table(t_table *table, t_system *sys);
+void				finish_table(t_table *table, t_system *sys,
+						int exit_status);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 10:40:05 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/18 15:16:59 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:05:45 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ static void	ft_parser(char **av)
 		exit(1);
 }
 
-void	finish_table(t_table *table, t_system *sys)
+void	finish_table(t_table *table, t_system *sys, int exit_status)
 {
 	sem_unlink(sys->sem_forks_name);
 	sem_close(sys->forks);
 	free(table->pid);
 	free(sys->start_timestamp);
 	free(sys->sem_forks_name);
-	exit(EXIT_SUCCESS);
+	exit(exit_status);
 }
 
 static void	start_table(t_table *table, t_system *sys, char **av)
@@ -54,7 +54,7 @@ static void	start_table(t_table *table, t_system *sys, char **av)
 	sys->forks = sem_open(sys->sem_forks_name, O_CREAT | O_EXCL, 0644,
 			ft_atol(av[1]));
 	if (sys->forks == SEM_FAILED)
-		finish_table(table, sys);
+		finish_table(table, sys, EXIT_FAILURE);
 }
 
 static void	kill_philosophers(t_table table)
@@ -95,12 +95,12 @@ int	main(int ac, char **av)
 	{
 		table.pid[index] = fork();
 		if (table.pid[index] < 0)
-			finish_table(&table, &sys);
+			finish_table(&table, &sys, EXIT_FAILURE);
 		if (table.pid[index] == 0)
 			philo_routine(table, sys, index);
 		index++;
 		ft_usleep(10);
 	}
 	kill_philosophers(table);
-	finish_table(&table, &sys);
+	finish_table(&table, &sys, EXIT_SUCCESS);
 }
