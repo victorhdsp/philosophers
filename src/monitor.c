@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/17 15:14:01 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:48:20 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,5 @@ void	ft_monitor_routine(t_table *table)
 		}
 	}
 	if (finished < table->philosophers_number + 1)
-		printf("%lld %i has died\n", current_time, finished - 1);
+		printf("%lld %i died\n", current_time, finished - 1);
 }

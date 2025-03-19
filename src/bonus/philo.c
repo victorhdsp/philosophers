@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 10:40:05 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/19 15:07:36 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:47:36 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	philo_routine(t_table table, t_system sys, int index)
 	}
 	if (philo.current_action != UNHUNGRY)
 	{
-		printf("%lld %d has dead\n", philo.current_time, philo.index);
+		printf("%lld %d died\n", philo.current_time, philo.index);
 		finish_table(&table, &sys, EXIT_SUCCESS);
 	}
 	finish_table(&table, &sys, EXIT_FAILURE);
