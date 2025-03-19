@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:22:58 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/17 15:15:37 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/19 09:49:23 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,33 @@ void	*ft_calloc(int size, int weight)
 		index++;
 	}
 	return ((void *)result);
+}
+
+char	*ft_ttoa(const t_timestamp value)
+{
+	char		*result;
+	t_timestamp	tmp;
+	int			index;
+
+	index = 0;
+	tmp = value;
+	if (tmp == 0)
+		index = 1;
+	while (tmp > 0)
+	{
+		tmp = tmp / 10;
+		index++;
+	}
+	result = ft_calloc(index + 1, sizeof(char));
+	if (!result)
+		return (NULL);
+	result[index] = '\0';
+	tmp = value;
+	while (index > 0)
+	{
+		index--;
+		result[index] = '0' + tmp % 10;
+		tmp = tmp / 10;
+	}
+	return (result);
 }

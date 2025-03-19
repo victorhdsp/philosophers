@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:47:03 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/15 09:54:43 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/19 09:47:47 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void	ft_start_table(char **av, t_table *table)
 	table->philosophers_list = ft_calloc(ft_atol(av[1]),
 			sizeof(t_philosopher *));
 	table->finish = 0;
+	table->last_philo = -1;
 }
 
 static void	ft_start_philosopher(char **av, int index, t_table *table)
@@ -48,6 +49,8 @@ static void	ft_start_philosopher(char **av, int index, t_table *table)
 	philo->time_to_eat = ft_atol(av[3]);
 	philo->time_to_sleep = ft_atol(av[4]);
 	philo->time_to_die = table->time_to_die;
+	philo->fork[0] = 0;
+	philo->fork[1] = 0;
 	if (av[5] && av[5][0])
 		philo->hungry_size = ft_atol(av[5]);
 	else

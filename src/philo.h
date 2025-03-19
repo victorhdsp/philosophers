@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:17:12 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/15 09:53:11 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/19 09:46:22 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_philosopher
 	t_timestamp		last_eating;
 	t_timestamp		current_time;
 	pthread_mutex_t	mutex;
+	int				fork[2];
 }					t_philosopher;
 
 typedef struct s_table
@@ -53,6 +54,7 @@ typedef struct s_table
 	t_timestamp		time_to_die;
 	int				forks;
 	int				finish;
+	int				last_philo;
 }					t_table;
 
 t_timestamp			ft_get_timestamp(void);

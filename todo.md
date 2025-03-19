@@ -7,3 +7,7 @@
 [x] Fazer o validações do projeto.
 
 [x] Impedir o programa de rodar valores negativos.
+
+
+Adicionar mãos para o filosofo e verificar se eles só podem pegar o garfo ao lado.
+Filosofo comendo com um garfo só na bonus.

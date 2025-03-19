@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:17:12 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/17 15:58:49 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:05:42 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef long long	t_timestamp;
 
 typedef struct s_system
 {
+	char			*start_timestamp;
 	char			*sem_forks_name;
 	sem_t			*forks;
 }					t_system;
@@ -55,7 +56,9 @@ typedef struct s_philosopher
 	int				current_action;
 	t_timestamp		current_time;
 	t_timestamp		last_eating;
+	t_timestamp		time_to_die;
 	int				hungry_size;
+	int				finish;
 }					t_philosopher;
 
 t_timestamp			ft_get_timestamp(void);
@@ -69,9 +72,12 @@ void				to_sleeped_action(t_table table, int *current_action);
 
 long				ft_atol(const char *value);
 void				*ft_calloc(int size, int weight);
+char				*ft_strjoin(char *s1, char *s2);
+char				*ft_ttoa(const t_timestamp value);
 
 void				ft_observer_philosopher(t_table table, t_philosopher *philo,
 						sem_t *forks);
-void				philo_routine(t_table table, sem_t *forks, int index);
+void				philo_routine(t_table table, t_system sys, int index);
+void				finish_table(t_table *table, t_system *sys);
 
 #endif

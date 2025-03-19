@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/17 15:12:32 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/03/18 15:19:08 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	to_getting_action(sem_t *forks, t_philosopher *philo)
 	printf("%lld %d has getted 1 fork\n", philo->current_time, philo->index);
 	philo->current_action = GETTED;
 	sem_wait(forks);
+	sem_wait(forks);
 	return (1);
 }
 
@@ -25,6 +26,7 @@ int	to_sleepy_action(sem_t *forks, t_philosopher *philo)
 {
 	printf("%lld %d has sleeping\n", philo->current_time, philo->index);
 	philo->current_action = SLEEPY;
+	sem_post(forks);
 	sem_post(forks);
 	return (1);
 }
