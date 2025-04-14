@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/04/01 05:11:41 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/14 09:30:10 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	*ft_philo_routine(void *arg)
 			to_sleeped_action(philo);
 		else if (current_action == SLEEPED)
 			to_nul_action(philo);
-		ft_usleep(1);
+		usleep(1);
 	}
 	return ("ok");
 }

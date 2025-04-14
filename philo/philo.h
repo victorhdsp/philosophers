@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 18:17:12 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/19 09:46:22 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/14 09:38:47 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ typedef struct s_table
 	int				forks;
 	int				finish;
 	int				last_philo;
+	t_timestamp		start_time;
 }					t_table;
 
 t_timestamp			ft_get_timestamp(void);
-void				ft_usleep(int value);
+void				ft_mssleep(int value);
 
 long				ft_atol(const char *value);
 void				*ft_calloc(int size, int weight);

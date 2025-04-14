@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 10:03:55 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/15 09:12:54 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/14 09:39:39 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_timestamp	ft_get_timestamp(void)
 	return (result);
 }
 
-void	ft_usleep(int time_in_ms)
+void	ft_mssleep(int time_in_ms)
 {
 	t_timestamp	finish_time;
 	t_timestamp	current_time;

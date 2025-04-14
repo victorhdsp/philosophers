@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/19 15:48:20 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/14 09:38:46 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,15 +93,16 @@ void	ft_monitor_routine(t_table *table)
 		if (finished)
 		{
 			table->finish = finished;
+			if (finished < table->philosophers_number + 1)
+				printf("%lld %i died\n", current_time - table->start_time,
+					finished - 1);
 			break ;
 		}
-		ft_usleep(5 / table->philosophers_number);
 		while (index < table->philosophers_number && !finished)
 		{
 			ft_observer_philosopher(table, index, current_time);
 			index++;
 		}
+		usleep(1);
 	}
-	if (finished < table->philosophers_number + 1)
-		printf("%lld %i died\n", current_time, finished - 1);
 }

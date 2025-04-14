@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/04/01 05:12:14 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/14 09:29:05 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,30 @@
 int	to_getting_action(t_table *table, t_philosopher *philo, int index,
 		t_timestamp current_time)
 {
-	if (index != table->last_philo + 1 % 1 == 0)
+	t_timestamp	print_time;
+
+	if (index % 2 == table->last_philo % 2)
+	{
 		return (0);
-	ft_locked_printf(table, current_time, index, "has taken a fork");
+	}
+	print_time = current_time - table->start_time;
+	ft_locked_printf(table, print_time, index, "has taken a fork");
 	philo->fork[0] = 1;
-	ft_locked_printf(table, current_time, index, "has taken a fork");
+	ft_locked_printf(table, print_time, index, "has taken a fork");
 	philo->fork[1] = 1;
 	ft_set_action(philo, GETTED);
 	table->forks -= 2;
-	if (index == table->philosophers_number - 1)
-		table->last_philo = -1;
-	else
-		table->last_philo = index;
+	table->last_philo = index;
 	return (1);
 }
 
 int	to_sleepy_action(t_table *table, t_philosopher *philo, int index,
 		t_timestamp current_time)
 {
-	ft_locked_printf(table, current_time, index, "is sleeping");
+	t_timestamp	print_time;
+
+	print_time = current_time - table->start_time;
+	ft_locked_printf(table, print_time, index, "is sleeping");
 	ft_set_action(philo, SLEEPY);
 	table->forks += 2;
 	philo->fork[0] = 0;
@@ -44,18 +49,24 @@ int	to_sleepy_action(t_table *table, t_philosopher *philo, int index,
 int	to_wait_action(t_table *table, t_philosopher *philo, int index,
 		t_timestamp current_time)
 {
+	t_timestamp	print_time;
+
+	print_time = current_time - table->start_time;
 	ft_set_action(philo, WAIT);
 	if (philo->hungry_size == 0)
 		ft_set_action(philo, UNHUNGRY);
 	else
-		ft_locked_printf(table, current_time, index, "is thinking");
+		ft_locked_printf(table, print_time, index, "is thinking");
 	return (1);
 }
 
 int	to_eating_action(t_table *table, t_philosopher *philo, int index,
 		t_timestamp current_time)
 {
-	ft_locked_printf(table, current_time, index, "is eating");
+	t_timestamp	print_time;
+
+	print_time = current_time - table->start_time;
+	ft_locked_printf(table, print_time, index, "is eating");
 	ft_set_action(philo, EATING);
 	philo->hungry_size--;
 	ft_set_last_eating(philo, philo->current_time);
