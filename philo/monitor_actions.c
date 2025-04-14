@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/19 15:47:17 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/01 05:12:14 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	to_getting_action(t_table *table, t_philosopher *philo, int index,
 		t_timestamp current_time)
 {
-	if (index != table->last_philo + 1)
+	if (index != table->last_philo + 1 % 1 == 0)
 		return (0);
 	ft_locked_printf(table, current_time, index, "has taken a fork");
 	philo->fork[0] = 1;

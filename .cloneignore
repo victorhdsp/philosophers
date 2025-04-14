@@ -4,7 +4,5 @@ learning*
 *.o
 *.a
 *.out
-philo
-philo_bonus
 .vscode
 LazyPhilosophersTester
