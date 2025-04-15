@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 10:03:55 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/15 11:55:35 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/14 09:28:37 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_timestamp	ft_get_timestamp(void)
 	return (result);
 }
 
-void	ft_usleep(int time_in_ms)
+void	ft_mssleep(t_philosopher *philo, int time_in_ms)
 {
 	t_timestamp	finish_time;
 	t_timestamp	current_time;
@@ -31,7 +31,10 @@ void	ft_usleep(int time_in_ms)
 	finish_time = current_time + time_in_ms;
 	while (current_time < finish_time)
 	{
-		usleep(((finish_time - current_time) * 1000) / 2);
+		if (philo)
+			if (current_time - philo->last_eating > philo->time_to_die)
+				break;
+		usleep(10);
 		current_time = ft_get_timestamp();
 	}
 }

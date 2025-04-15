@@ -6,53 +6,74 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/19 15:48:11 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/14 10:14:38 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	to_getting_action(sem_t *forks, t_philosopher *philo)
+int	to_getting_action(t_philosopher *philo)
 {
-	printf("%lld %d has taken a fork\n", philo->current_time, philo->index);
-	printf("%lld %d has taken a fork\n", philo->current_time, philo->index);
+	t_timestamp print_time;
+
+	print_time = philo->current_time - philo->start_time;
+	sem_wait(philo->prints);
+	printf("%lld %d has taken a fork\n", print_time, philo->index);
+	printf("%lld %d has taken a fork\n", print_time, philo->index);
+	sem_post(philo->prints);
 	philo->current_action = GETTED;
-	sem_wait(forks);
-	sem_wait(forks);
+	sem_wait(philo->forks);
 	return (1);
 }
 
-int	to_sleepy_action(sem_t *forks, t_philosopher *philo)
+int	to_sleepy_action(t_philosopher *philo)
 {
-	printf("%lld %d is sleeping\n", philo->current_time, philo->index);
+	t_timestamp print_time;
+
+	print_time = philo->current_time - philo->start_time;
+	sem_post(philo->forks);
+	sem_wait(philo->prints);
+	printf("%lld %d is sleeping\n", print_time, philo->index);
+	sem_post(philo->prints);
 	philo->current_action = SLEEPY;
-	sem_post(forks);
-	sem_post(forks);
 	return (1);
 }
 
 int	to_wait_action(t_philosopher *philo)
 {
+	t_timestamp print_time;
+
+	print_time = philo->current_time - philo->start_time;
 	philo->current_action = WAIT;
+	ft_mssleep(philo, 10);
 	if (philo->hungry_size == 0)
 		philo->current_action = UNHUNGRY;
 	else
-		printf("%lld %d is thinking\n", philo->current_time, philo->index);
+	{
+		sem_wait(philo->prints);
+		printf("%lld %d is thinking\n", print_time, philo->index);
+		sem_post(philo->prints);
+	}
 	return (1);
 }
 
-int	to_eating_action(t_table table, t_philosopher *philo)
+int	to_eating_action(t_philosopher *philo)
 {
-	printf("%lld %d is eating\n", philo->current_time, philo->index);
-	ft_usleep(table.time_to_eat);
-	philo->current_action = EATED;
+	t_timestamp print_time;
+
+	print_time = philo->current_time - philo->start_time;
 	philo->hungry_size--;
+	sem_wait(philo->prints);
+	printf("%lld %d is eating\n", print_time, philo->index);
+	sem_post(philo->prints);
+	ft_mssleep(philo, philo->time_to_eat);
 	philo->last_eating = philo->current_time;
+	philo->current_action = EATED;
 	return (1);
 }
 
-void	to_sleeped_action(t_table table, int *current_action)
+void	to_sleeped_action(t_philosopher *philo)
 {
-	ft_usleep(table.time_to_sleep);
-	*current_action = SLEEPED;
+	ft_mssleep(philo, philo->time_to_sleep);
+	philo->current_action = SLEEPED;
 }

@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 10:40:05 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/03/19 15:05:45 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/14 10:26:17 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	finish_table(t_table *table, t_system *sys, int exit_status)
 {
 	sem_unlink(sys->sem_forks_name);
 	sem_close(sys->forks);
+	sem_unlink(sys->sem_print_name);
+	sem_close(sys->prints);
 	free(table->pid);
 	free(sys->start_timestamp);
 	free(sys->sem_forks_name);
@@ -41,6 +43,7 @@ static void	start_table(t_table *table, t_system *sys, char **av)
 	int	index;
 
 	sem_unlink(sys->sem_forks_name);
+	sem_unlink(sys->sem_forks_name);
 	index = 0;
 	table->philosophers_number = ft_atol(av[1]);
 	table->time_to_die = ft_atol(av[2]);
@@ -51,23 +54,31 @@ static void	start_table(t_table *table, t_system *sys, char **av)
 	else
 		table->hungry_size = -1;
 	table->pid = ft_calloc(table->philosophers_number, sizeof(pid_t));
+	table->start_time = ft_get_timestamp();
 	sys->forks = sem_open(sys->sem_forks_name, O_CREAT | O_EXCL, 0644,
-			ft_atol(av[1]));
+			ft_atol(av[1]) / 2);
+	sys->prints = sem_open(sys->sem_print_name, O_CREAT | O_EXCL, 0644, 1);
 	if (sys->forks == SEM_FAILED)
 		finish_table(table, sys, EXIT_FAILURE);
 }
 
-static void	kill_philosophers(t_table table)
+static void	kill_philosophers(t_table table, t_system sys)
 {
 	int	index;
 	int	pid_status;
+	t_timestamp print_time;
 
 	index = 0;
 	while (index < table.philosophers_number)
 	{
 		waitpid(table.pid[index], &pid_status, 0);
 		if (WEXITSTATUS(pid_status) == EXIT_SUCCESS)
-			break ;
+		{
+			print_time = ft_get_timestamp() - table.start_time;
+			sem_wait(sys.prints);
+			printf("%lld %d died\n", print_time, index);
+		}
+		break ;
 		index++;
 	}
 	index = 0;
@@ -88,6 +99,7 @@ int	main(int ac, char **av)
 		return (1);
 	sys.start_timestamp = ft_ttoa(ft_get_timestamp());
 	sys.sem_forks_name = ft_strjoin("forks_", sys.start_timestamp);
+	sys.sem_print_name = ft_strjoin("print_", sys.start_timestamp);
 	ft_parser(av);
 	start_table(&table, &sys, av);
 	index = 0;
@@ -99,8 +111,8 @@ int	main(int ac, char **av)
 		if (table.pid[index] == 0)
 			philo_routine(table, sys, index);
 		index++;
-		ft_usleep(10);
+		usleep(1);
 	}
-	kill_philosophers(table);
+	kill_philosophers(table, sys);
 	finish_table(&table, &sys, EXIT_SUCCESS);
 }

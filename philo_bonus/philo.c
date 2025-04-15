@@ -6,49 +6,84 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 10:40:05 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/04/01 05:11:48 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/14 10:39:33 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-void	ft_observer_philosopher(t_table table, t_philosopher *philo,
-		sem_t *forks)
+void	ft_observer_philosopher(t_philosopher *philo)
 {
 	if (philo->current_action == NUL)
 		to_wait_action(philo);
 	else if (philo->current_action == WAIT)
-		to_getting_action(forks, philo);
+		to_getting_action(philo);
 	else if (philo->current_action == GETTED)
-		to_eating_action(table, philo);
+		to_eating_action(philo);
 	else if (philo->current_action == EATED)
-		to_sleepy_action(forks, philo);
+		to_sleepy_action(philo);
 	else if (philo->current_action == SLEEPY)
-		to_sleeped_action(table, &philo->current_action);
+		to_sleeped_action(philo);
 	else if (philo->current_action == SLEEPED)
 		philo->current_action = NUL;
+}
+
+void	*ft_philo_routine(void *arg)
+{
+	t_philosopher	*philo;
+
+	philo = (t_philosopher *) arg;
+	while (philo->current_time - philo->last_eating < philo->time_to_die
+		&& philo->current_action != UNHUNGRY)
+	{
+		philo->current_time = ft_get_timestamp();
+		ft_observer_philosopher(philo);
+		usleep(1);
+	}
+	if (philo->current_action != UNHUNGRY)
+		philo->current_action = DEAD;
+	return ("ok");
+}
+
+static void	start_philo(t_philosopher *philo, t_table table, t_system sys, int index)
+{
+	philo->current_action = NUL;
+	philo->current_time = ft_get_timestamp();
+	philo->last_eating = philo->current_time;
+	philo->hungry_size = table.hungry_size;
+	philo->index = index;
+	philo->start_time = table.start_time;
+	philo->prints = sys.prints;
+	philo->forks = sys.forks;
+	philo->time_to_die = table.time_to_die;
+	philo->time_to_eat = table.time_to_eat;
+	philo->time_to_sleep = table.time_to_sleep;
+}
+
+static void	kill_table(t_table table, t_system sys, int id, int exit_status)
+{
+	int		index;
+
+	index = 0;
+	while (index < table.philosophers_number)
+	{
+		if (index == id)
+			continue;
+		kill(table.pid[index], SIGKILL);
+		index++;
+	}
+	finish_table(&table, &sys, exit_status);
 }
 
 void	philo_routine(t_table table, t_system sys, int index)
 {
 	t_philosopher	philo;
+	pthread_t		thread;
 
-	philo.current_action = NUL;
-	philo.current_time = ft_get_timestamp();
-	philo.last_eating = philo.current_time;
-	philo.hungry_size = table.hungry_size;
-	philo.index = index;
-	while (philo.current_time - philo.last_eating < table.time_to_die
-		&& philo.current_action != UNHUNGRY && table.philosophers_number > 1)
-	{
-		ft_observer_philosopher(table, &philo, sys.forks);
-		ft_usleep(1);
-		philo.current_time = ft_get_timestamp();
-	}
+	start_philo(&philo, table, sys, index);
+	pthread_create(&thread, NULL, ft_philo_routine, &philo);
+	pthread_join(thread, NULL);
 	if (philo.current_action != UNHUNGRY)
-	{
-		printf("%lld %d died\n", philo.current_time, philo.index);
-		finish_table(&table, &sys, EXIT_SUCCESS);
-	}
+		kill_table(table, sys, index, EXIT_SUCCESS);
 	finish_table(&table, &sys, EXIT_FAILURE);
 }

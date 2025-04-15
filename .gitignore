@@ -1,2 +1,5 @@
 *.pdf
 LazyPhilosophersTester
+*.o
+*.out
+/**/philo
