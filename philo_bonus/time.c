@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 10:03:55 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/04/14 09:28:37 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/15 10:53:06 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_mssleep(t_philosopher *philo, int time_in_ms)
 	{
 		if (philo)
 			if (current_time - philo->last_eating > philo->time_to_die)
-				break;
+				break ;
 		usleep(10);
 		current_time = ft_get_timestamp();
 	}

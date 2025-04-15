@@ -32,7 +32,7 @@ void	*ft_philo_routine(void *arg)
 {
 	t_philosopher	*philo;
 
-	philo = (t_philosopher *) arg;
+	philo = (t_philosopher *)arg;
 	while (philo->current_time - philo->last_eating < philo->time_to_die
 		&& philo->current_action != UNHUNGRY)
 	{
@@ -45,7 +45,8 @@ void	*ft_philo_routine(void *arg)
 	return ("ok");
 }
 
-static void	start_philo(t_philosopher *philo, t_table table, t_system sys, int index)
+static void	start_philo(t_philosopher *philo, t_table table, t_system sys,
+		int index)
 {
 	philo->current_action = NUL;
 	philo->current_time = ft_get_timestamp();
@@ -62,13 +63,13 @@ static void	start_philo(t_philosopher *philo, t_table table, t_system sys, int i
 
 static void	kill_table(t_table table, t_system sys, int id, int exit_status)
 {
-	int		index;
+	int	index;
 
 	index = 0;
 	while (index < table.philosophers_number)
 	{
 		if (index == id)
-			continue;
+			continue ;
 		kill(table.pid[index], SIGKILL);
 		index++;
 	}

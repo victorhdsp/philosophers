@@ -6,14 +6,18 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 10:40:05 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/04/14 10:26:17 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/15 10:52:41 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static void	ft_parser(char **av)
+static void	ft_parser(int ac, char **av)
 {
+	int	o_index;
+	int	i_index;
+
+	o_index = 0;
 	if (ft_atol(av[1]) <= 0)
 		exit(1);
 	if (ft_atol(av[2]) <= 0)
@@ -24,6 +28,17 @@ static void	ft_parser(char **av)
 		exit(1);
 	if (av[5] && ft_atol(av[5]) <= 0)
 		exit(1);
+	while (o_index < ac)
+	{
+		while (av[o_index][i_index])
+		{
+			if ((av[o_index][i_index] < '0' || av[o_index][i_index] > '9'))
+				exit(1);
+			i_index++;
+		}
+		i_index = 0;
+		o_index++;
+	}
 }
 
 void	finish_table(t_table *table, t_system *sys, int exit_status)
@@ -64,9 +79,9 @@ static void	start_table(t_table *table, t_system *sys, char **av)
 
 static void	kill_philosophers(t_table table, t_system sys)
 {
-	int	index;
-	int	pid_status;
-	t_timestamp print_time;
+	int			index;
+	int			pid_status;
+	t_timestamp	print_time;
 
 	index = 0;
 	while (index < table.philosophers_number)
@@ -100,7 +115,7 @@ int	main(int ac, char **av)
 	sys.start_timestamp = ft_ttoa(ft_get_timestamp());
 	sys.sem_forks_name = ft_strjoin("forks_", sys.start_timestamp);
 	sys.sem_print_name = ft_strjoin("print_", sys.start_timestamp);
-	ft_parser(av);
+	ft_parser(ac, av);
 	start_table(&table, &sys, av);
 	index = 0;
 	while (index < table.philosophers_number)

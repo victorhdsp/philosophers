@@ -14,7 +14,7 @@
 
 int	to_getting_action(t_philosopher *philo)
 {
-	t_timestamp print_time;
+	t_timestamp	print_time;
 
 	print_time = philo->current_time - philo->start_time;
 	sem_wait(philo->prints);
@@ -28,7 +28,7 @@ int	to_getting_action(t_philosopher *philo)
 
 int	to_sleepy_action(t_philosopher *philo)
 {
-	t_timestamp print_time;
+	t_timestamp	print_time;
 
 	print_time = philo->current_time - philo->start_time;
 	sem_post(philo->forks);
@@ -41,7 +41,7 @@ int	to_sleepy_action(t_philosopher *philo)
 
 int	to_wait_action(t_philosopher *philo)
 {
-	t_timestamp print_time;
+	t_timestamp	print_time;
 
 	print_time = philo->current_time - philo->start_time;
 	philo->current_action = WAIT;
@@ -59,7 +59,7 @@ int	to_wait_action(t_philosopher *philo)
 
 int	to_eating_action(t_philosopher *philo)
 {
-	t_timestamp print_time;
+	t_timestamp	print_time;
 
 	print_time = philo->current_time - philo->start_time;
 	philo->hungry_size--;
