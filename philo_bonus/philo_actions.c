@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:11:48 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/04/14 10:14:38 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:20:04 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	to_wait_action(t_philosopher *philo)
 
 	print_time = philo->current_time - philo->start_time;
 	philo->current_action = WAIT;
-	ft_mssleep(philo, 10);
+	ft_mssleep(philo, 3100 / philo->time_to_die);
 	if (philo->hungry_size == 0)
 		philo->current_action = UNHUNGRY;
 	else
