@@ -6,24 +6,39 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 13:47:03 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/04/14 09:38:43 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/15 10:58:06 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	ft_parser(char **av)
+static void	ft_parser(int ac, char **av)
 {
+	int	o_index;
+	int	i_index;
+
+	o_index = 1;
 	if (ft_atol(av[1]) <= 0)
-		exit(0);
+		exit(1);
 	if (ft_atol(av[2]) <= 0)
-		exit(0);
+		exit(1);
 	if (ft_atol(av[3]) <= 0)
-		exit(0);
+		exit(1);
 	if (ft_atol(av[4]) <= 0)
-		exit(0);
+		exit(1);
 	if (av[5] && ft_atol(av[5]) <= 0)
-		exit(0);
+		exit(1);
+	while (o_index < ac)
+	{
+		i_index = 0;
+		while (av[o_index][i_index])
+		{
+			if ((av[o_index][i_index] < '0' || av[o_index][i_index] > '9'))
+				exit(1);
+			i_index++;
+		}
+		o_index++;
+	}
 }
 
 static void	ft_start_table(char **av, t_table *table)
@@ -85,7 +100,7 @@ int	main(int ac, char **av)
 
 	if (ac > 6 || ac < 5)
 		return (-1);
-	ft_parser(av);
+	ft_parser(ac, av);
 	ft_start_table(av, &table);
 	index = 0;
 	while (index < table.philosophers_number)

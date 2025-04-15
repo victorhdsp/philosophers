@@ -6,7 +6,7 @@
 /*   By: vide-sou <vide-sou@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/15 10:40:05 by vide-sou          #+#    #+#             */
-/*   Updated: 2025/04/15 10:52:41 by vide-sou         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:09:45 by vide-sou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	ft_parser(int ac, char **av)
 	int	o_index;
 	int	i_index;
 
-	o_index = 0;
+	o_index = 1;
 	if (ft_atol(av[1]) <= 0)
 		exit(1);
 	if (ft_atol(av[2]) <= 0)
@@ -30,13 +30,13 @@ static void	ft_parser(int ac, char **av)
 		exit(1);
 	while (o_index < ac)
 	{
+		i_index = 0;
 		while (av[o_index][i_index])
 		{
 			if ((av[o_index][i_index] < '0' || av[o_index][i_index] > '9'))
 				exit(1);
 			i_index++;
 		}
-		i_index = 0;
 		o_index++;
 	}
 }
@@ -126,7 +126,7 @@ int	main(int ac, char **av)
 		if (table.pid[index] == 0)
 			philo_routine(table, sys, index);
 		index++;
-		usleep(1);
+		usleep(1000);
 	}
 	kill_philosophers(table, sys);
 	finish_table(&table, &sys, EXIT_SUCCESS);
